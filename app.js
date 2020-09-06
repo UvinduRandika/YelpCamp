@@ -12,12 +12,23 @@ var express     = require("express"),
     User        = require("./models/user"),
     seedDB      = require("./seeds")
     
-//requiring routes
+
 var commentRoutes    = require("./routes/comments"),
     campgroundRoutes = require("./routes/campgrounds"),
     indexRoutes      = require("./routes/index")
     
-mongoose.connect("mongodb://localhost/yelp_camp");
+mongoose.connect("mongodb+srv://Uvindu:abcd@cluster0.czhkl.mongodb.net/YelpCamp?&authSource=admin&retryWrites=true&w=majority", {
+/* mongodb://Uvindu:abcd@mongo-cluster-shard-00-00-ixqtu.mongodb.net:27017,mongo-cluster-shard-00-01-ixqtu.mongodb.net:27017,mongo-cluster-shard-00-02-ixqtu.mongodb.net:27017/test?ssl=true&replicaSet=mongo-cluster-shard-0&authSource=admin&retryWrites=true
+ */	
+	useNewUrlParser: true,
+	useCreateIndex: true
+}).then(()=>{
+	console.log("connected to DB");
+}).catch(err => {
+	console.log("error", err.message);
+});
+
+
 app.use(bodyParser.urlencoded({extended: true}));
 app.set("view engine", "ejs");
 app.use(express.static(__dirname + "/public"));
@@ -25,7 +36,7 @@ app.use(methodOverride("_method"));
 app.use(flash());
  seedDB(); //seed the database
 
-// PASSPORT CONFIGURATION
+
 app.use(require("express-session")({
     secret: "Once again Rusty wins cutest dog!",
     resave: false,
